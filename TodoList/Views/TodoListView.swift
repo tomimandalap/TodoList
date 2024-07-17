@@ -24,7 +24,6 @@ struct TodoListView: View {
             List {
                 if todoVM.todos.isEmpty {
                     Text("No todos available")
-                        .font(.title2)
                         .fontWeight(.medium)
                         .foregroundStyle(.gray)
                         .frame(maxWidth: .infinity)
