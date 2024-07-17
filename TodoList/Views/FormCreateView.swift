@@ -7,30 +7,66 @@
 
 import SwiftUI
 
-struct CreateTodoView: View {
-//    var onSubmit() -> Void {}
+struct FormCreateView: View {
+    @Environment(\.dismiss) var dismiss
+
+    @Environment(TodoViewModel.self) var todoVM
+
+    @State private var _title: String = ""
+    @State private var _date: Date = .init()
 
     var body: some View {
         Form {
-            TextField("Title", text: .constant(""))
-                .autocorrectionDisabled(true)
-                .textInputAutocapitalization(.words)
+            Text("Create New Todo")
+                .font(.title3)
+                .fontWeight(.medium)
 
-            DatePicker("Date", selection: .constant(Date()), displayedComponents: .date)
+            HStack {
+                Text("Title")
 
-            Toggle(isOn: .constant(false), label: {
-                Text("Status")
-            })
-        }.toolbar {
-            ToolbarItem(placement: .confirmationAction) {
-                Button(action: {}) {
-                    Text("Save")
-                }
+                Spacer()
+
+                TextField("Title", text: $_title)
+                    .autocorrectionDisabled(true)
+                    .textInputAutocapitalization(.words)
+                    .multilineTextAlignment(.trailing)
+                    
+            }
+
+            DatePicker("Goal Date", selection: $_date, in: Date()..., displayedComponents: .date)
+
+            HStack {
+                Spacer()
+
+                Button(action: onSubmitForm) {
+                    Text("Create")
+                        .padding(.vertical, 8)
+                        .padding(.horizontal, 12)
+                        .foregroundStyle(.white)
+                        .background(bgButtonColor)
+                        .cornerRadius(8)
+                }.disabled(isFormValid())
             }
         }
+    }
+
+    private func isFormValid() -> Bool {
+        _title.isEmpty
+    }
+
+    private var bgButtonColor: Color {
+        return isFormValid() ? .gray : .blue
+    }
+
+    private func onSubmitForm() {
+        let newTodoItem = TodoItem(title: _title, date: _date, isCompleted: false)
+        todoVM.createTodo(payloadNewTodo: newTodoItem)
+
+        // close pop sheet
+        dismiss()
     }
 }
 
 #Preview {
-    CreateTodoView()
+    FormCreateView().environment(TodoViewModel())
 }

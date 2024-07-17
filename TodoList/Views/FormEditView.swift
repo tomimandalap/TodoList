@@ -8,11 +8,39 @@
 import SwiftUI
 
 struct FormEditView: View {
+    @Binding var todo: TodoItem
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Form {
+            HStack {
+                Text("Title")
+
+                Spacer()
+
+                TextField("Title", text: $todo.title)
+                    .autocorrectionDisabled(true)
+                    .textInputAutocapitalization(.words)
+                    .multilineTextAlignment(.trailing)
+                    .disabled(true)
+            }
+
+            DatePicker("Goal Date", selection: $todo.date, displayedComponents: .date)
+
+            Toggle(isOn: $todo.isCompleted, label: {
+                Text("Goal Status")
+            })
+        }
+    }
+
+    private func isFormValid() -> Bool {
+        todo.title.isEmpty
+    }
+
+    private var bgButtonColor: Color {
+        return isFormValid() ? .gray : .blue
     }
 }
 
 #Preview {
-    FormEditView()
+    FormEditView(todo: .constant(TodoItem(title: "Title Lorem", date: Date(), isCompleted: false)))
 }

@@ -8,11 +8,29 @@
 import SwiftUI
 
 struct TodoDetailView: View {
+    var item: TodoItem
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            Text(item.title)
+                .font(.title2)
+                .fontWeight(.semibold)
+
+            HStack {
+                Text("Goal Date")
+                Spacer()
+                Text(item.date, format: .dateTime.year().month().day())
+            }
+
+            HStack {
+                Text("Status")
+                Spacer()
+                ChipView(isCompleted: item.isCompleted)
+            }
+        }
     }
 }
 
 #Preview {
-    TodoDetailView()
+    TodoDetailView(item: TodoItem(title: "Title", date: Date(), isCompleted: false))
 }

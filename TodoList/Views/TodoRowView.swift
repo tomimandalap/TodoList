@@ -8,11 +8,28 @@
 import SwiftUI
 
 struct TodoRowView: View {
+    var item: TodoItem
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        HStack {
+            VStack(alignment: .leading) {
+                Text(item.title)
+                    .font(.title2)
+                    .fontWeight(.medium)
+                    .lineLimit(1)
+
+                Text(item.date, format: .dateTime.year().month().day().hour().minute())
+                    .font(.caption)
+                    .foregroundStyle(.gray)
+            }
+
+            Spacer()
+
+            ChipView(isCompleted: item.isCompleted)
+        }
     }
 }
 
 #Preview {
-    TodoRowView()
+    TodoRowView(item: TodoItem(title: "Testing", date: Date(), isCompleted: true))
 }

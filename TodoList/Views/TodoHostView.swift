@@ -8,11 +8,32 @@
 import SwiftUI
 
 struct TodoHostView: View {
+    @Environment(\.editMode) var editMode
+
+    @Environment(TodoViewModel.self) var todoVM
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(alignment: .leading) {
+            HStack {
+                if editMode?.wrappedValue == .active {
+                    Button("Cancel", role: .cancel) {
+                        editMode?.animation().wrappedValue = .inactive
+                    }
+                }
+
+                Spacer()
+                EditButton()
+            }
+
+            if editMode?.wrappedValue == .inactive {
+                TodoSummaryView(todo: todoVM.todos[0])
+            } else {
+                Text("HOOO")
+            }
+        }.padding()
     }
 }
 
 #Preview {
-    TodoHostView()
+    TodoHostView().environment(TodoViewModel())
 }

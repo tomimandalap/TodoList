@@ -8,11 +8,32 @@
 import SwiftUI
 
 struct ChipView: View {
+    private var isCompleted: Bool
+
+    private var textTitle: String {
+        return isCompleted ? "Completed" : "Pending"
+    }
+
+    private var backgroundColor: Color {
+        return isCompleted ? .green : .red
+    }
+
+    init(isCompleted: Bool) {
+        self.isCompleted = isCompleted
+    }
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text(textTitle)
+            .font(.caption)
+            .fontWeight(.medium)
+            .padding(.vertical, 6)
+            .padding(.horizontal, 12)
+            .foregroundStyle(.white)
+            .background(backgroundColor)
+            .cornerRadius(8)
     }
 }
 
 #Preview {
-    ChipView()
+    ChipView(isCompleted: true)
 }
